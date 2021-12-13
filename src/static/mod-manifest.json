@@ -1,0 +1,76 @@
+{
+    "apiVersion": "1.2",
+    "version": "1.0",
+    "name": "Donut Chart",
+    "id": "donut-chart",
+    "icon": "icon.svg",
+    "properties": [
+        {
+            "name": "labelsVisible",
+            "type": "string",
+            "defaultValue": "all"
+        },
+        {
+            "name": "labelsPosition",
+            "defaultValue": "inside",
+            "type": "string"
+        },
+        {
+            "name": "labelsPercentage",
+            "defaultValue": "true",
+            "type": "boolean"
+        },
+        {
+            "name": "labelsValue",
+            "defaultValue": "false",
+            "type": "boolean"
+        },
+        {
+            "name": "labelsCategory",
+            "defaultValue": "false",
+            "type": "boolean"
+        },
+        {
+            "name": "sortedPlacement",
+            "defaultValue": "true",
+            "type": "boolean"
+        },
+        {
+            "name": "sortedPlacementOrder",
+            "defaultValue": "ascending",
+            "type": "string"
+        },
+        {
+            "name": "circleType",
+            "defaultValue": "whole-circle",
+            "type": "string"
+        }
+
+    ],
+    "dataViewDefinition": {
+        "colorAxis": {
+            "mode": "categorical",
+            "dropTarget": {
+                "icon": "Color",
+                "description": "Color by {0}"
+            }
+        },
+        "axes": [
+            {
+                "name": "Sector size by",
+                "mode": "continuous",
+                "placement": "none"
+            },
+            {
+                "name": "Center value",
+                "mode": "continuous",
+                "placement": "none"
+            }
+        ]
+    },
+    "files": [
+        "index.html",
+        "main.css",
+        "bundle.js"
+    ]
+}
