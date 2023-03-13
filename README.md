@@ -1,5 +1,7 @@
 # Donut Chart Mod for TIBCO Spotfire®
 
+<img src="assets/donut.png" width="60%"/>
+
 The donut chart is functionally identical to a pie chart, with the exception of a blank center and the ability to support multiple statistics at once. It provides a better data intensity ratio to standard pie charts since the blank center can be used to display additional data.
 
 ## Installation & Use
