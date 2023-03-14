@@ -12,7 +12,7 @@ The [Wiki](https://github.com/TIBCOSoftware/spotfire-mod-donut/wiki) contains st
 
 In a terminal window:
 - `npm install`
-- `npm run build`
+- `npm start`
 
 In a new terminal window:
 - `npm run server`
