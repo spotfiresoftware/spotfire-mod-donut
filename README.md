@@ -6,6 +6,8 @@ The donut chart is functionally identical to a pie chart, with the exception of 
 
 ## Installation & Use
 
+[Download latest version](https://github.com/TIBCOSoftware/spotfire-mod-donut/releases)
+
 The [Wiki](https://github.com/TIBCOSoftware/spotfire-mod-donut/wiki) contains step-by-step instruction on how to install and use this Mod in TIBCO Spotfire®.
 
 ## Building the Project
