@@ -41,19 +41,12 @@ import { calculatePercentageValue, formatTotalSum } from "./utility";
 /**
  * Render the visualization
  * @param {Spotfire.Mod} mod API
- * @return {donutState}
+ * @param {Spotfire.DataView} dataView Data view
+ * @param {Spotfire.Size} size Size
+ * @param {Spotfire.RenderContext} context Context
+ * @return {donutState | undefined}
  */
-export async function createDonutState(mod) {
-    /**
-     * Initialize dataView, size, and context based on the mod API
-     * @param {Spotfire.DataView} dataView
-     * @param {Spotfire.Size} size
-     * @param {Spotfire.RenderContext} context
-     */
-    const dataView = await mod.visualization.data();
-    const size = await mod.windowSize();
-    const context = await mod.getRenderContext();
-
+export async function createDonutState(mod, dataView, size, context) {
     /**
      * Check for any errors.
      */

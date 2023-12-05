@@ -11,8 +11,10 @@ import { refreshCenterTextOnMouseLeave, refreshCenterTextOnMouseover, renderCent
  * @param {modProperty} modProperty
  * @param {boolean} circleTypeChanged
  * @param {boolean} labelsPositionChanged
+ * @param {boolean} interactive
  */
-export async function render(donutState, modProperty, circleTypeChanged, labelsPositionChanged) {
+export async function render(donutState, modProperty, circleTypeChanged, labelsPositionChanged, interactive) {
+    const animationDuration = interactive ? resources.animationDuration : 0;
     const width = donutState.size.width - resources.sizeModifier;
     const height = donutState.size.height - resources.sizeModifier;
 
@@ -106,13 +108,13 @@ export async function render(donutState, modProperty, circleTypeChanged, labelsP
     sectors
         .merge(newSectors)
         .transition()
-        .duration(resources.animationDuration)
+        .duration(animationDuration)
         .attr("value", (d) => d.data.absPercentage)
         .attr("fill", (d) => d.data.color)
         .attrTween("d", tweenArc)
         .attr("stroke", (d) => (d.data.markedRowCount() > 0 ? donutState.styles.fontColor : "none"));
 
-    sectors.exit().transition().duration(resources.animationDuration).attr("fill", "transparent").remove();
+    sectors.exit().transition().duration(animationDuration).attr("fill", "transparent").remove();
 
     function tweenArc(elem) {
         let prevValue = this.__prev || {};
@@ -165,12 +167,10 @@ export async function render(donutState, modProperty, circleTypeChanged, labelsP
     drawRectangularSelection(donutState, modProperty);
     applyHoverEffect(pie, donutState);
     addLabels(arc, pie, donutState, modProperty, circleTypeChanged, labelsPositionChanged);
-    drawOuterLinesForNegativeValues(pie, donutState, padding, svg);
+    drawOuterLinesForNegativeValues(pie, donutState, padding, svg, animationDuration);
     renderCenterText(donutState, radius, modProperty);
 
-    sectors.exit().transition().duration(resources.animationDuration).attr("fill", "transparent").remove();
-
-    donutState.context.signalRenderComplete();
+    sectors.exit().transition().duration(animationDuration).attr("fill", "transparent").remove();
 }
 
 /**
@@ -179,8 +179,9 @@ export async function render(donutState, modProperty, circleTypeChanged, labelsP
  * @param {donutState} donutState
  * @param {number} padding
  * @param {d3.svg} svg
+ * @param {number} animationDuration
  * */
-function drawOuterLinesForNegativeValues(pie, donutState, padding, svg) {
+function drawOuterLinesForNegativeValues(pie, donutState, padding, svg, animationDuration) {
     // Used for the outer side showing negative values
     let outerArcNegativeValues = d3
         .arc()
@@ -209,7 +210,7 @@ function drawOuterLinesForNegativeValues(pie, donutState, padding, svg) {
     // Define behavior on transition
     outerSectorsNegativeValues
         .transition()
-        .duration(resources.animationDuration)
+        .duration(animationDuration)
         .attrTween("d", function (d) {
             return function () {
                 return outerArcNegativeValues(d);
@@ -221,7 +222,7 @@ function drawOuterLinesForNegativeValues(pie, donutState, padding, svg) {
     outerSectorsNegativeValues
         .exit()
         .transition()
-        .duration(resources.animationDuration)
+        .duration(animationDuration)
         .attr("fill", "transparent")
         .remove();
 }
