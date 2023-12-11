@@ -42,10 +42,7 @@ Spotfire.initialize(async (mod) => {
         mod.visualization.axis(resources.centerAxisName)
     );
 
-    /** Flag to check if there was any error overlay messages printed during the previous execution,
-     *  in order to skip redundant clear-related calls of the overlay.
-     */
-    let errorOverlayVisualized = false;
+    let context = mod.getRenderContext();
 
     /**
      * Initiate the read loop
@@ -63,14 +60,11 @@ Spotfire.initialize(async (mod) => {
             labelsCategory,
             circleType
         ) => {
-            let donutState = await createDonutState(mod);
+            let donutState = await createDonutState(mod, dataView, size, context);
             let circleTypeChanged = reader.hasValueChanged(circleType);
             let labelsPositionChanged = reader.hasValueChanged(labelsPosition);
 
-            if (errorOverlayVisualized) {
-                mod.controls.errorOverlay.hide(resources.errorOverlayCategoryGeneral);
-                errorOverlayVisualized = false;
-            }
+            mod.controls.errorOverlay.hide(resources.errorOverlayCategoryGeneral);
 
             if (donutState === undefined) {
                 const svgsectors = document.getElementById("sectors");
@@ -99,14 +93,12 @@ Spotfire.initialize(async (mod) => {
             if (donutState == null) {
                 console.error(resources.errorNullDonutState(donutState));
                 mod.controls.errorOverlay.show(resources.errorGeneralOverlay, resources.errorOverlayCategoryGeneral);
-                errorOverlayVisualized = true;
                 return;
             }
 
             if (donutState.data.length === 0) {
                 console.error(resources.errorNullDonutState(donutState));
                 mod.controls.errorOverlay.show(resources.errorEmptyDataOnYAxis, resources.errorOverlayCategoryGeneral);
-                errorOverlayVisualized = true;
                 return;
             }
 
@@ -121,11 +113,11 @@ Spotfire.initialize(async (mod) => {
                 circleType: circleType
             };
             try {
-                await render(donutState, modProperty, circleTypeChanged, labelsPositionChanged);
+                await render(donutState, modProperty, circleTypeChanged, labelsPositionChanged, context.interactive);
+                context.signalRenderComplete();
             } catch (error) {
                 console.error(error);
                 mod.controls.errorOverlay.show(resources.errorRendering, resources.errorOverlayCategoryGeneral);
-                errorOverlayVisualized = true;
             }
         }
     );
